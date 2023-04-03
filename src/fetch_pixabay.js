@@ -1,0 +1,25 @@
+import axios from "axios";
+
+export function getFotos (whatToFind) {
+   const API_KEY = '29462445-ad519f5c94a1ccd9fe6c99f35';
+   const BASE_URL = 'https://pixabay.com/api/';
+   const searchParams = new URLSearchParams({
+        key: API_KEY,
+        q: whatToFind,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: 'true',
+        per_page: 5,
+        page: 1,
+        });
+   try {
+      return axios
+         .get(`${BASE_URL}?${searchParams}`);
+   } catch (error) {
+      throw new Error(error.massege);
+   }
+};
+
+// console.log(getFotos());
+
+
