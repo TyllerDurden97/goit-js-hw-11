@@ -1,4 +1,4 @@
-import { getFotos, resetPages, currentPage, perPage } from "./fetch_pixabay";
+import { getFotos, resetPages, addPages, currentPage, perPage } from "./fetch_pixabay";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
@@ -7,20 +7,73 @@ const formEl = document.querySelector('.search-form');
 const inputEl = document.querySelector('.input');
 const buttonLoadMoreEl = document.querySelector('.load-more');
 const galeryEl = document.querySelector('.gallery');
-// let lightbox;
+const btnUp = {
+      el: document.querySelector('.btn-up'),
+      scrolling: false,
+      show() {
+        if (this.el.classList.contains('btn-up_hide') && !this.el.classList.contains('btn-up_hiding')) {
+          this.el.classList.remove('btn-up_hide');
+          this.el.classList.add('btn-up_hiding');
+          window.setTimeout(() => {
+            this.el.classList.remove('btn-up_hiding');
+          }, 300);
+        }
+      },
+      hide() {
+        if (!this.el.classList.contains('btn-up_hide') && !this.el.classList.contains('btn-up_hiding')) {
+          this.el.classList.add('btn-up_hiding');
+          window.setTimeout(() => {
+            this.el.classList.add('btn-up_hide');
+            this.el.classList.remove('btn-up_hiding');
+          }, 300);
+        }
+      },
+      addEventListener() {
+        // при прокрутке окна (window)
+        window.addEventListener('scroll', () => {
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          if (this.scrolling && scrollY > 0) {
+            return;
+          }
+          this.scrolling = false;
+          // если пользователь прокрутил страницу более чем на 200px
+          if (scrollY > 400) {
+            // сделаем кнопку .btn-up видимой
+            this.show();
+          } else {
+            // иначе скроем кнопку .btn-up
+            this.hide();
+          }
+        });
+        // при нажатии на кнопку .btn-up
+        document.querySelector('.btn-up').onclick = () => {
+          this.scrolling = true;
+          this.hide();
+          // переместиться в верхнюю часть страницы
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
+        }
+      }
+}
+// ПЛАВНАЯ ПРОКРУТКА РАБОТАЕТ НЕ КОРРЕКТНО. ПОЭТОМУ ФУНКЦИЯ ЗАКОММЕНТИРОВАНА ////////////////////////////////////////////////////
+// function smoothScroll() {
+// const { height: cardHeight } = galeryEl.firstElementChild.getBoundingClientRect();
+
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: "smooth",
+// });
+// }
+//   window.addEventListener('scroll', smoothScroll);
 
 inputEl.focus();
 
-
 formEl.addEventListener('submit', handleSearchForm);
 buttonLoadMoreEl.addEventListener('click', handleLoadMoreBtn);
-
-// lightbox = new SimpleLightbox('.photo-card a', {
-//    captionsData: 'alt',
-//    captionDelay: '250',
-//    animationSpeed: '100',
-//    fadeSpeed: '150'
-// }).refresh();
+btnUp.addEventListener();
 
 function addLightbox() {
    const lightbox = new SimpleLightbox('.photo-card a', {
@@ -51,29 +104,21 @@ function handleSearchForm(event) {
             buttonLoadMoreEl.classList.add('is-hidden');
          } else {
             buttonLoadMoreEl.classList.remove('is-hidden');
-         }
-       
-                  console.log(searchResult);
-                  console.log(searchResult.data.hits.length);
-
+         }    
 
          if (!searchResult.data.total) {
-             Notiflix.Notify.info("Sorry, there are no images matching your search query. Please try again.");
+             Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
             return;            
-         }
-
-        
-         
+         }              
          galeryEl.innerHTML = makeMarkupGalery(searchResult);
-         addLightbox();
-
          
-   //       lightbox = new SimpleLightbox('.gallery a', {
-   // captionsData: 'alt',
-   // captionDelay: '250',
-   // animationSpeed: '100',
-   // fadeSpeed: '150'
-   //       }).refresh();
+         addLightbox();
+         addPages();
+
+         Notiflix.Notify.success(`Hooray! We found ${searchResult.data.totalHits} images.`);
+
+         // smoothScroll()
+    
       } catch (error) {
          console.log(error.message);
       }
@@ -91,17 +136,11 @@ function handleLoadMoreBtn() {
              Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
             buttonLoadMoreEl.classList.add('is-hidden');
          }
-         // addLightbox();
-
-// lightbox = new SimpleLightbox('.gallery a', {
-//    captionsData: 'alt',
-//    captionDelay: '250',
-//    animationSpeed: '100',
-//    fadeSpeed: '150'
-// }).refresh();
-
+        
          galeryEl.insertAdjacentHTML('beforeend', makeMarkupGalery(searchMoreResult));
-                 addLightbox();
+
+         addLightbox();
+         addPages();
 
       } catch (error) {
          console.log(error.message);
@@ -109,7 +148,6 @@ function handleLoadMoreBtn() {
    }
    fetchMoreData()
 }
-
 
 function makeMarkupGalery(searchResult) {    
    return searchResult.data.hits.map(({ largeImageURL, views, webformatURL, tags, likes, comments, downloads }) => {
@@ -139,17 +177,4 @@ function makeMarkupGalery(searchResult) {
    }
 
 
-
-
-
-
-
-
-   //  (async function fetchData() {
-   //    try {
-   //       const res = await getFotos(whatToFind);
-   //       console.log(res);
-   //    } catch (error) {
-   //       console.log(error.message);
-   //    }
-   // }) ()   
+ 

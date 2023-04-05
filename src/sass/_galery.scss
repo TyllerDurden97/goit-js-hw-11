@@ -10,6 +10,7 @@
    justify-content: center;
    margin-left: auto;
    margin-right: auto;
+   scroll-behavior: smooth;
 }
 
 .gallery-item {
@@ -37,6 +38,7 @@
    display: flex;
    justify-content: space-between;
    padding: 5px;
+   background-color: rgba(107, 142, 186, 0.164);;
 }
 .photo-card {
    display: flex; 
@@ -57,7 +59,47 @@
 }
 
 .info-item:hover {
-   background-color: rgba(127, 169, 225, 0.231);
+   color: rgba(10, 21, 118, 0.515);
    border-radius: 4px;
    cursor: text;
+}
+
+.btn-up {
+   position: fixed;
+   background-color: #d8f500;
+   right: 20px;
+   bottom: 30px;
+   border-radius: 25px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: opacity 0.15s ease-in-out, transform 0.3s ease-in-out;
+   color: #233eeb;
+   width: 50px;
+   height: 50px;
+   opacity: 1;
+   transform: translateY(0);
+}
+
+.btn-up_hide {
+   display: none;
+}
+
+.btn-up_hiding {
+   opacity: 0;
+   transform: translateY(100px);
+}
+
+.btn-up-icon {
+   width: 40px;
+   height: 40px;
+   fill: currentcolor;
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .btn-up:hover {
+      background-color: #233eeb;
+      color: #d8f500;
+   }
 }

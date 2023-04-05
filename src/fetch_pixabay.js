@@ -18,8 +18,6 @@ export function getFotos (whatToFind) {
       page: [currentPage],
         });
    try {
-      currentPage += 1;
-      console.log(currentPage)
       return axios
          .get(`${BASE_URL}?${searchParams}`);
    } catch (error) {
@@ -31,9 +29,9 @@ export function resetPages() {
    currentPage = 1;
 }
 
-// export function addPages() {
-//    currentPage += 1;
-// }
-// console.log(getFotos());
+export function addPages() {
+      currentPage += 1;
+}
+
 
 
