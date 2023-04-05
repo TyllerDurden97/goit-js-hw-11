@@ -1,13 +1,13 @@
 .is-hidden {
    opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+   visibility: hidden;
+   pointer-events: none;
    }
 .search-form {
-display: flex;
-padding: 20px;
-margin-bottom: 10px;
-background-color: rgb(87, 36, 227);
+   display: flex;
+   padding: 20px;
+   margin-bottom: 10px;
+   background-color: rgb(87, 36, 227);
 }
 
 .formwrap {
@@ -16,38 +16,50 @@ background-color: rgb(87, 36, 227);
 }
 
 .input {
-      // position: relative;   
-      width: 358px;
-      height: 50px;
-      padding: 15px 15px;
-
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      // filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
-      border-radius: 4px;
+   width: 358px;
+   height: 50px;
+   padding: 15px 15px;
+   color: rgb(0, 0, 144);
+   border: 1px solid rgba(255, 255, 255);
+   border-radius: 4px;
    background-color: rgb(197, 217, 244);     
-    outline: transparent;
-    font-size: 25;
+   outline: transparent;
+   font-size: 25px;
 
 }
 
 .search-btn {
-         position: absolute;
-         right: 0;
+   position: absolute;
+   right: 0;
    justify-content: center;      
    height: 50px;
    width: 50px;
-
-      background-color: rgb(197, 217, 244);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-                  border-radius: 4px;
-                  font-weight: 500;
+   background-color: rgb(127, 169, 225);
+   border: 1px solid rgba(255, 255, 255, 0.3);
+   border-radius: 4px;
+   cursor: pointer;
 }
-#icon-search {
-         position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 12px;
-            height: 12px;
-            fill: rgb(12, 70, 70);
-            z-index: 111;
+
+.search-btn:hover .icon-search {
+   transform: scale(1.4);
+}
+
+.btn-wrap {
+   display: flex;
+   justify-content: center;
+   margin: 30px 0;
+
+}
+.load-more {
+   display: flex;      
+   padding: 5px;  
+   background-color: rgb(127, 169, 225);
+   border: 1px solid rgba(255, 255, 255, 0.3);
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 20px;
+   font-weight: 500;
+   color: rgb(0, 0, 144);
+   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
